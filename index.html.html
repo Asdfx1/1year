@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <title>Anniversary</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(180deg, #fff7fa 0%, #ffeef7 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .hint {
+      font-size: 14px;
+      color: #8a6b7a;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Envelope */
+    .envelope {
+      width: 360px;
+      max-width: 92vw;
+      height: 220px;
+      position: relative;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      transition: transform 0.6s cubic-bezier(.2,.9,.3,1), opacity 0.4s;
+      margin-bottom: 20px;
+      border-radius: 14px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .envelope .back {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, #ffb6c1 0%, #ff88a8 100%);
+      border-radius: 14px;
+      transform: translateZ(-1px);
+      overflow: hidden;
+    }
+
+    .flap {
+      position: absolute;
+      left: 0; right: 0; top: 0;
+      height: 50%;
+      transform-origin: center top;
+      transform-style: preserve-3d;
+      transition: transform 0.9s cubic-bezier(.2,.9,.3,1);
+      z-index: 4;
+    }
+
+    .flap::before {
+      content: "";
+      position: absolute; left:0; right:0; top:0; bottom:0;
+      background: linear-gradient(180deg,#ff88a8,#ffb6c1);
+      clip-path: polygon(0 0, 50% 70%, 100% 0, 100% 100%, 0 100%);
+      border-radius: 14px;
+      box-shadow: 0 6px 12px rgba(0,0,0,.08);
+    }
+
+    .flap .stripe {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 18%;
+      width: 86%;
+      height: 2px;
+      background: rgba(255,255,255,.25);
+      border-radius: 2px;
+      filter: blur(.2px);
+    }
+
+    .letter {
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      top: 18%;
+      height: 70%;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      transform: translateY(12%) scale(0.98);
+      opacity: 0;
+      transition: transform 0.7s cubic-bezier(.2,.9,.3,1), opacity .6s;
+      z-index: 2;
+      padding: 18px;
+      box-sizing: border-box;
+    }
+
+    .envelope .seal {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 12px;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle at 30% 30%, #fff6, #0000 40%), #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: rgba(255,20,100,0.96);
+      z-index: 5;
+      box-shadow: 0 6px 20px rgba(0,0,0,.15);
+      font-size: 26px;
+    }
+
+    /* Envelope open animation */
+    .envelope.open .flap {
+      transform: rotateX(-180deg) translateY(-6%);
+    }
+    .envelope.open .letter {
+      transform: translateY(-62%) scale(1);
+      opacity: 1;
+      transition-delay: 0.15s;
+    }
+    .envelope.open {
+      transform: translateY(-10px);
+    }
+
+    /* Slide Images */
+    .card {
+      width: 360px;
+      max-width: 92vw;
+      background: #fff;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .card.show {
+      display: flex;
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      object-fit: contain;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.4s;
+    }
+    .card img:hover {
+      transform: scale(1.02);
+    }
+
+    .buttons {
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .buttons button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #ff88a8;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      flex: 1;
+      margin: 0 6px;
+      transition: background 0.3s;
+    }
+    .buttons button:hover {
+      background: #ff5c85;
+    }
+
+    @media (max-width:420px){
+      .card img { max-height: 250px; }
+      .envelope { height: 180px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hint" id="hint">กดดูนะขี้หงุดหงิด 🎀</div>
+
+  <div class="envelope" id="envelope" title="คลิกเพื่อเปิด">
+    <div class="flap">
+      <div class="stripe"></div>
+    </div>
+    <div class="back"></div>
+    <div class="letter" id="letter">
+      <div style="font-size:14px;color:#b43b67;font-weight:700;margin-bottom:8px;">To: my girl</div>
+      <div style="font-size:13px;color:#666;line-height:1.5;">
+        Happy Anniversary — ขอบคุณที่อยู่ด้วยกันมาในปีนี้
+        และขอโทษที่ไม่ได้อยู่ด้วยนะ 
+           เราขอบคุณที่แกพยายามอดทนกับเรามาโดยตลอด 
+        ถึงจะทะเลาะกันบ่อยแต่อยากบอกว่ารักมากๆนะ💕
+        เราไม่ค่อยพูดไม่ค่อยแสดงออก เราขอโทษจริงๆ
+      </div>
+    </div>
+    <div class="seal">💌</div>
+  </div>
+
+  <div class="card" id="card">
+    <img id="card-img" src="images/0.jpg" alt="รูปการ์ด">
+    <div class="buttons">
+      <button id="prevBtn">ก่อนหน้า</button>
+      <button id="nextBtn">ถัดไป</button>
+    </div>
+  </div>
+
+  <div id="player" style="display:none;"></div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    const envelope = document.getElementById('envelope');
+    const hint = document.getElementById('hint');
+    const card = document.getElementById('card');
+    const cardImg = document.getElementById('card-img');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    const localImages = [
+      "images/0.jpg","images/1.png","images/2.png","images/3.png",
+      "images/4.jpg","images/5.jpg","images/6.jpg","images/7.jpg",
+      "images/8.png","images/9.jpg","images/10.jpg","images/11.jpg",
+      "images/12.jpg","images/13.jpg","images/14.jpg","images/15.jpg","images/16.jpg","images/17.jpg"
+    ];
+    let currentIndex = 0;
+
+    let opened = false;
+    envelope.addEventListener('click', () => {
+      if(opened) return;
+      opened = true;
+      envelope.classList.add('open');
+      setTimeout(() => {
+        card.classList.add('show');
+        hint.textContent = 'ยินดีด้วย 🎉';
+      }, 900);
+
+      if(player) player.playVideo();
+    });
+
+    function showImage(index) { cardImg.src = localImages[index]; }
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % localImages.length;
+      showImage(currentIndex);
+    });
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + localImages.length) % localImages.length;
+      showImage(currentIndex);
+    });
+    cardImg.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % localImages.length;
+      showImage(currentIndex);
+    });
+
+    let player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        videoId: 'EBJf0slhj5A',
+        playerVars: {
+          autoplay: 1,
+          loop: 1,
+          playlist: 'EBJf0slhj5A',
+          controls: 0,
+          modestbranding: 1,
+          fs: 0,
+          rel: 0,
+          showinfo: 0,
+          mute: 0
+        },
+        events: {
+          onReady: (event) => event.target.playVideo()
+        }
+      });
+    }
+  </script>
+</body>
+</html>
