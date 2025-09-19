@@ -1,0 +1,14 @@
+body {
+  font-family: "Segoe UI", Roboto, sans-serif;
+  /* พื้นหลังสีขาว + gradient pastel สีชมพู-ม่วงอ่อน */
+  background: linear-gradient(180deg, #ffffff 0%, #ffeef7 50%, #fff0f5 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  /* เพิ่ม pattern จุดเล็ก ๆ */
+  background-image: radial-gradient(rgba(255, 200, 230, 0.2) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
